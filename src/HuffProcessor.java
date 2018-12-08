@@ -78,11 +78,40 @@ public class HuffProcessor {
 
 	private void readCompressedBits(HuffNode root, BitInputStream in, BitOutputStream out) {
 		// TODO Auto-generated method stub
-		
+		 HuffNode current = root; 
+		   while (true) {
+		       int bits = in.readBits(1);
+		       if (bits == -1) {
+		           throw new HuffException("bad input, no PSEUDO_EOF");
+		       }
+		       else { 
+		           if (bits == 0) current = current.myLeft;
+		      else current = current.myRight;
+
+		           if (current.myLeft == null && current.myRight == null) {
+		               if (current.myValue == PSEUDO_EOF) 
+		                   break;   // out of loop
+		               else {
+		                   out.write(current.myValue);
+		                   current = root; // start back after leaf
+		               }
+		           }
+		       }
+		   }
 	}
 
 	private HuffNode readTreeHeader(BitInputStream in) {
 		// TODO Auto-generated method stub
-		return null;
+		int bit = in.readBits(1);
+		if (bit == -1) throw new HuffException(bit + " not found");
+		if (bit == 0) {
+		    HuffNode left = readTreeHeader(in);
+		    HuffNode right = readTreeHeader(in);
+		    return new HuffNode(0,0,left,right);
+		}
+		else {
+		    int value = in.readBits(9);
+		    return new HuffNode(value,0,null,null);
+		}
 	}
 }
