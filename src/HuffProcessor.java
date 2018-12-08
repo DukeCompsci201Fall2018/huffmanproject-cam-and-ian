@@ -20,14 +20,14 @@ public class HuffProcessor {
 	public static final int HUFF_TREE  = HUFF_NUMBER | 1;
 
 	private final int myDebugLevel;
-	
+
 	public static final int DEBUG_HIGH = 4;
 	public static final int DEBUG_LOW = 1;
-	
+
 	public HuffProcessor() {
 		this(0);
 	}
-	
+
 	public HuffProcessor(int debug) {
 		myDebugLevel = debug;
 	}
@@ -59,6 +59,14 @@ public class HuffProcessor {
 	 *            Buffered bit stream writing to the output file.
 	 */
 	public void decompress(BitInputStream in, BitOutputStream out){
+		int bits = in.readBits(BITS_PER_INT);
+		if(bits != HUFF_TREE)
+			throw new HuffException("illegal header starts with " + bits);
+		
+		HuffNode root = readTreeHeader(in);
+		readCompressedBits(root,in,out);
+		out.close();
+
 
 		while (true){
 			int val = in.readBits(BITS_PER_WORD);
@@ -66,5 +74,15 @@ public class HuffProcessor {
 			out.writeBits(BITS_PER_WORD, val);
 		}
 		out.close();
+	}
+
+	private void readCompressedBits(HuffNode root, BitInputStream in, BitOutputStream out) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private HuffNode readTreeHeader(BitInputStream in) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
