@@ -61,7 +61,6 @@ public class HuffProcessor {
 				break;
 			String code = encoding[bits];
 			out.writeBits(code.length(), Integer.parseInt(code,2));
-
 		}
 		String code = encoding[PSEUDO_EOF];
 		out.writeBits(code.length(), Integer.parseInt(code,2));
@@ -90,14 +89,11 @@ public class HuffProcessor {
 			encodings[root.myValue] = path;
 			return;
 		}
-		String pathLeft = path + "0";
-		String pathRight = path + "1";
-		codingHelper(root.myLeft, pathLeft, encodings);
-		codingHelper(root.myRight, pathRight, encodings);
+		codingHelper(root.myLeft, path + "0", encodings);
+		codingHelper(root.myRight, path + "1", encodings);
 	}
 
 	private HuffNode makeTreeFromCounts(int[] counts) {
-
 		PriorityQueue<HuffNode> pq = new PriorityQueue<>();
 		for(int i=0; i<counts.length; i++) {
 			if(counts[i] > 0)
@@ -114,7 +110,6 @@ public class HuffProcessor {
 		}
 		HuffNode root = pq.remove();
 		return root;
-
 	}
 
 	private int[] readForCounts(BitInputStream in) {
