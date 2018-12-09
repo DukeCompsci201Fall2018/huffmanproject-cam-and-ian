@@ -68,11 +68,11 @@ public class HuffProcessor {
 
 	private void writeHeader(HuffNode root, BitOutputStream out) {
 		if(root.myLeft == null && root.myRight == null) {
-			out.writeBits(1,1);
+			out.writeBits(1,1); //awk11 helped with this
 			out.writeBits(BITS_PER_WORD + 1, root.myValue);
 		}
 		else {
-			out.writeBits(1,0);
+			out.writeBits(1,0); //and this
 			writeHeader(root.myLeft, out);
 			writeHeader(root.myRight, out);
 		}
@@ -112,6 +112,10 @@ public class HuffProcessor {
 		return root;
 	}
 
+	//@param in
+	//stream in
+	//@param out
+	//integer array
 	private int[] readForCounts(BitInputStream in) {
 		// TODO Auto-generated method stub
 		int[]freq = new int[ALPH_SIZE + 1];
