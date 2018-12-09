@@ -68,11 +68,11 @@ public class HuffProcessor {
 
 	private void writeHeader(HuffNode root, BitOutputStream out) {
 		if(root.myLeft == null && root.myRight == null) {
-			out.writeBits(1,1); //awk11 helped with this
+			out.writeBits(1,1); //awk11 helped with this line
 			out.writeBits(BITS_PER_WORD + 1, root.myValue);
 		}
 		else {
-			out.writeBits(1,0); //and this
+			out.writeBits(1,0); //and this line
 			writeHeader(root.myLeft, out);
 			writeHeader(root.myRight, out);
 		}
